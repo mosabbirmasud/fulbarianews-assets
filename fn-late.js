@@ -508,9 +508,11 @@ try{
 (function(){
   if(location.pathname!=='/')return;
   function fit(){var L=document.querySelector('.top-news-left'),R=document.getElementById('top-news-right');if(!L||!R)return;
-    var b=R.querySelector('.latest-news');if(!b)return;b.style.height='';if(window.innerWidth<992)return;
+    /* Sorboshesh ar Jonopriyo duto tab-er list-i soman uchchotay rakhe */
+    var bs=[].slice.call(R.querySelectorAll('.latest-news'));if(!bs.length)return;bs.forEach(function(x){x.style.height='';});if(window.innerWidth<992)return;
+    var b=bs.filter(function(x){return x.offsetHeight>0;})[0];if(!b)return;
     var d=R.offsetHeight-L.offsetHeight;if(Math.abs(d)<4)return;
-    b.style.height=Math.min(b.scrollHeight,Math.max(240,b.offsetHeight-d))+'px';}
+    var h=Math.max(240,b.offsetHeight-d)+'px';bs.forEach(function(x){x.style.height=h;});}
   var n=0,iv=setInterval(function(){fit();if(++n>12)clearInterval(iv);},500);
   window.addEventListener('load',fit);var t;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fit,200);});
 })();
