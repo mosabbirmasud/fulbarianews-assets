@@ -1063,13 +1063,16 @@ try{
     pv.addEventListener('click',function(){step(-1);});nx.addEventListener('click',function(){step(1);});
     tr.addEventListener('scroll',function(){upd();},{passive:true});
     var get=function(u){return fetch(u).then(function(r){return r.json();}).then(function(j){return (j.feed&&j.feed.entry)||[];});};
+    /* label er বানান (য়/ড়/ঢ় er duto rup) mile na gele site er label list theke thik rup ber kore */
+    var nz=function(s){return String(s).replace(/\u09af\u09bc/g,'\u09df').replace(/\u09a1\u09bc/g,'\u09dc').replace(/\u09a2\u09bc/g,'\u09dd').replace(/\s+/g,' ').trim();};
+    var resolve=function(){return fetch('/feeds/posts/summary?alt=json&max-results=0').then(function(r){return r.json();}).then(function(j){var c=((j.feed&&j.feed.category)||[]).map(function(x){return x.term;});return c.filter(function(x){return nz(x)===nz(LBL);})[0]||LBL;}).catch(function(){return LBL;});};
     var load=function(){
-      get('/feeds/posts/summary/-/'+encodeURIComponent(LBL)+'?alt=json&max-results='+MAX).then(function(e){return e;}).then(function(e){
+      resolve().then(function(L){return get('/feeds/posts/summary/-/'+encodeURIComponent(L)+'?alt=json&max-results='+MAX);}).then(function(e){return e;}).then(function(e){
         if(!e.length){box.remove();return;}
         tr.innerHTML=e.map(function(x){
           var u='';(x.link||[]).forEach(function(l){if(l.rel==='alternate')u=l.href;});
           var img=x['media$thumbnail']?x['media$thumbnail'].url.replace(/\/s72(-[a-z0-9-]*)?\//,'/w400-h228-p-k-no-nu-rw/').replace(/=s72(-[a-z0-9-]*)?$/,'=w400-h228-p-k-no-nu-rw'):'';
-          var cat='';(x.category||[]).some(function(c){if(!SKIP[c.term]){cat=c.term;return true;}return false;});
+          var cat='';(x.category||[]).some(function(c){if(!SKIP[c.term]&&nz(c.term)!==nz(LBL)){cat=c.term;return true;}return false;});
           var d=new Date(x.published.$t),hh=d.getHours(),mm=('0'+d.getMinutes()).slice(-2);
           var ds=bn(d.getDate())+' '+MO[d.getMonth()]+' '+bn(d.getFullYear())+' | '+bn((hh%12||12)+':'+mm);
           var t=esc(x.title.$t);
