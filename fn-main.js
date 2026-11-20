@@ -1016,7 +1016,10 @@ try{
 try{
 (function(){
   if(location.pathname!=='/')return;
-  var LBL='নির্বাচিত',MAX=10,SKIP={'নির্বাচিত':1,'নিউজ':1,'ফুলবাড়ীয়া নিউজ':1};
+  /* Setting: Layout > Site Features > "নির্বাচিত খবর (Carousel)" gadget (status/title/label/count) */
+  var CFG={};var ce=document.querySelector('.sf-cfg[data-k="selected"]');if(ce)ce.textContent.split('\n').forEach(function(l){var m=l.match(/^\s*([a-z]+)\s*:\s*(.*?)\s*$/i);if(m)CFG[m[1].toLowerCase()]=m[2];});
+  if(/^(off|no|0|বন্ধ)$/i.test(CFG.status||''))return;
+  var LBL=CFG.label||'নির্বাচিত',MAX=Math.min(20,Math.max(3,parseInt(CFG.count,10)||10)),TTL=CFG.title||'নির্বাচিত খবর',SKIP={'নির্বাচিত':1,'নিউজ':1,'ফুলবাড়ীয়া নিউজ':1};SKIP[LBL]=1;
   var BN='০১২৩৪৫৬৭৮৯',MO=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
   var bn=function(s){return String(s).replace(/\d/g,function(d){return BN[d];});};
   var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
@@ -1052,7 +1055,7 @@ try{
     if(document.querySelector('.fn-sel'))return true;
     var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
     var box=document.createElement('div');box.className='container custom-container fn-sel-wrap';
-    box.innerHTML='<div class="fn-sel"><div class="fsl-in"><div class="fsl-h"><h2><span></span>নির্বাচিত খবর</h2></div><div class="fsl-wrap"><button type="button" class="fsl-btn fsl-p" aria-label="আগের খবর" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="fsl-track">'+'<div class="fsl-sk"></div>'.repeat(5)+'</div><button type="button" class="fsl-btn fsl-n" aria-label="পরের খবর"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div></div>';
+    box.innerHTML='<div class="fn-sel"><div class="fsl-in"><div class="fsl-h"><h2><span></span>'+esc(TTL)+'</h2></div><div class="fsl-wrap"><button type="button" class="fsl-btn fsl-p" aria-label="আগের খবর" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="fsl-track">'+'<div class="fsl-sk"></div>'.repeat(5)+'</div><button type="button" class="fsl-btn fsl-n" aria-label="পরের খবর"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div></div>';
     anchor.parentNode.insertBefore(box,anchor.nextSibling);
     var tr=box.querySelector('.fsl-track'),pv=box.querySelector('.fsl-p'),nx=box.querySelector('.fsl-n');
     var upd=function(){pv.disabled=tr.scrollLeft<5;nx.disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-5;};
