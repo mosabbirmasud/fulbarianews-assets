@@ -1010,3 +1010,74 @@ try{
 })();
 
 }catch(e){console&&console.error&&console.error("fn-main #14",e)}
+
+
+/* #fn-sel: homepage e "সর্বশেষ" er pore "নির্বাচিত খবর" carousel (datanews8 TOPIK PILIHAN style). Label "নির্বাচিত", na thakle sorbosesh khobor. */
+try{
+(function(){
+  if(location.pathname!=='/')return;
+  var LBL='নির্বাচিত',MAX=10,SKIP={'নির্বাচিত':1,'নিউজ':1,'ফুলবাড়ীয়া নিউজ':1};
+  var BN='০১২৩৪৫৬৭৮৯',MO=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+  var bn=function(s){return String(s).replace(/\d/g,function(d){return BN[d];});};
+  var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var css='.fn-sel{margin:18px 0 6px}'+
+   '.fn-sel .fsl-in{position:relative;display:flex;align-items:stretch;gap:20px;background:linear-gradient(90deg,#fde7eb 0%,#fbe8f1 45%,#f1e9fb 100%);border-radius:12px;padding:22px 22px 22px 26px;min-height:250px}'+
+   '.fn-sel .fsl-h{flex:0 0 230px;display:flex;align-items:flex-end;padding-bottom:14px}'+
+   '.fn-sel .fsl-h h2{margin:0!important;font-size:32px!important;line-height:1.25!important;font-weight:800!important;color:#111!important}'+
+   '.fn-sel .fsl-h h2 span{display:block;width:44px;height:4px;background:#c8102e;border-radius:2px;margin-bottom:12px}'+
+   '.fn-sel .fsl-wrap{position:relative;flex:1;min-width:0}'+
+   '.fn-sel .fsl-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:2px 2px 8px;scrollbar-width:none}'+
+   '.fn-sel .fsl-track::-webkit-scrollbar{display:none}'+
+   '.fn-sel .fsl-c{flex:0 0 190px;scroll-snap-align:start;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;text-decoration:none!important;color:#111!important;display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s}'+
+   '.fn-sel .fsl-c:hover{box-shadow:0 6px 16px rgba(0,0,0,.13);transform:translateY(-2px)}'+
+   '.fn-sel .fsl-c img{width:100%;height:107px;object-fit:cover;display:block;margin:0!important}'+
+   '.fn-sel .fsl-b{padding:9px 11px 11px;display:flex;flex-direction:column;flex:1}'+
+   '.fn-sel .fsl-l{font-size:12.5px!important;font-weight:700!important;color:#c8102e!important;margin-bottom:4px;line-height:1.3!important}'+
+   '.fn-sel .fsl-t{font-size:15px!important;line-height:1.45!important;font-weight:700!important;color:#111!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 8px!important}'+
+   '.fn-sel .fsl-c:hover .fsl-t{color:#c8102e!important}'+
+   '.fn-sel .fsl-d{margin-top:auto;font-size:12.5px!important;color:#888!important;line-height:1.3!important}'+
+   '.fn-sel .fsl-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;color:#333;padding:0}'+
+   '.fn-sel .fsl-btn svg{width:16px;height:16px}'+
+   '.fn-sel .fsl-btn:hover{background:#c8102e;color:#fff}'+
+   '.fn-sel .fsl-btn[disabled]{opacity:0;pointer-events:none}'+
+   '.fn-sel .fsl-p{left:-17px}.fn-sel .fsl-n{right:-17px}'+
+   '.fn-sel .fsl-sk{flex:0 0 190px;height:224px;border-radius:8px;background:rgba(255,255,255,.6)}'+
+   '@media(max-width:767px){.fn-sel .fsl-in{flex-direction:column;gap:12px;padding:16px 0 16px 14px;min-height:0}.fn-sel .fsl-h{flex:none;padding:0}.fn-sel .fsl-h h2{font-size:24px!important}.fn-sel .fsl-h h2 span{margin-bottom:8px}.fn-sel .fsl-c,.fn-sel .fsl-sk{flex-basis:62%}.fn-sel .fsl-btn{display:none}.fn-sel .fsl-track{padding-right:14px}}';
+  function mount(){
+    var lead=document.querySelector('.aj-second');var la=document.querySelector('.la-sec');
+    var anchor=null;
+    if(lead){anchor=lead;while(anchor.parentElement&&!anchor.parentElement.classList.contains('lead-section'))anchor=anchor.parentElement;if(!anchor.parentElement)anchor=null;}
+    if(!anchor&&la)anchor=la.previousElementSibling;
+    if(!anchor)return false;
+    if(document.querySelector('.fn-sel'))return true;
+    var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+    var box=document.createElement('div');box.className='container custom-container fn-sel-wrap';
+    box.innerHTML='<div class="fn-sel"><div class="fsl-in"><div class="fsl-h"><h2><span></span>নির্বাচিত খবর</h2></div><div class="fsl-wrap"><button type="button" class="fsl-btn fsl-p" aria-label="আগের খবর" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="fsl-track">'+'<div class="fsl-sk"></div>'.repeat(5)+'</div><button type="button" class="fsl-btn fsl-n" aria-label="পরের খবর"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div></div>';
+    anchor.parentNode.insertBefore(box,anchor.nextSibling);
+    var tr=box.querySelector('.fsl-track'),pv=box.querySelector('.fsl-p'),nx=box.querySelector('.fsl-n');
+    var upd=function(){pv.disabled=tr.scrollLeft<5;nx.disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-5;};
+    var step=function(d){var c=tr.querySelector('.fsl-c,.fsl-sk');var w=c?c.offsetWidth+12:200;tr.scrollBy({left:d*Math.max(w,Math.floor(tr.clientWidth/w)*w),behavior:'smooth'});};
+    pv.addEventListener('click',function(){step(-1);});nx.addEventListener('click',function(){step(1);});
+    tr.addEventListener('scroll',function(){upd();},{passive:true});
+    var get=function(u){return fetch(u).then(function(r){return r.json();}).then(function(j){return (j.feed&&j.feed.entry)||[];});};
+    var load=function(){
+      get('/feeds/posts/summary/-/'+encodeURIComponent(LBL)+'?alt=json&max-results='+MAX).then(function(e){return e.length?e:get('/feeds/posts/summary?alt=json&max-results='+MAX);}).then(function(e){
+        if(!e.length){box.remove();return;}
+        tr.innerHTML=e.map(function(x){
+          var u='';(x.link||[]).forEach(function(l){if(l.rel==='alternate')u=l.href;});
+          var img=x['media$thumbnail']?x['media$thumbnail'].url.replace(/\/s72(-[a-z0-9-]*)?\//,'/w400-h228-p-k-no-nu-rw/').replace(/=s72(-[a-z0-9-]*)?$/,'=w400-h228-p-k-no-nu-rw'):'';
+          var cat='';(x.category||[]).some(function(c){if(!SKIP[c.term]){cat=c.term;return true;}return false;});
+          var d=new Date(x.published.$t),hh=d.getHours(),mm=('0'+d.getMinutes()).slice(-2);
+          var ds=bn(d.getDate())+' '+MO[d.getMonth()]+' '+bn(d.getFullYear())+' | '+bn((hh%12||12)+':'+mm);
+          var t=esc(x.title.$t);
+          return '<a class="fsl-c" href="'+esc(u)+'">'+(img?'<img loading="lazy" src="'+esc(img)+'" alt="'+t+'" width="400" height="228">':'<img loading="lazy" alt="'+t+'" width="400" height="228">')+'<div class="fsl-b">'+(cat?'<div class="fsl-l">'+esc(cat)+'</div>':'')+'<div class="fsl-t">'+t+'</div><div class="fsl-d">'+ds+'</div></div></a>';
+        }).join('');
+        tr.scrollLeft=0;upd();
+      }).catch(function(){box.remove();});
+    };
+    if('IntersectionObserver' in window){var io=new IntersectionObserver(function(en){if(en[0].isIntersecting){io.disconnect();load();}},{rootMargin:'400px'});io.observe(box);}else load();
+    return true;
+  }
+  var n=0;(function wait(){if(mount())return;if(++n<40)setTimeout(wait,250);})();
+})();
+}catch(e){console&&console.error&&console.error("fn-main fn-sel",e)}
