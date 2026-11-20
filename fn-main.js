@@ -935,7 +935,10 @@ try{
 
 /*fn-share: ShareThis er bodole nijer share bar (Amar Desh style gol icon) (Facebook, WhatsApp, Messenger, X, Telegram, link copy, mobile share). Count Firebase e (path: fnShare), 1 ba beshi hole dekhay.*/
 (function(){
-  if(!/^\/\d{4}\/\d{2}\/.+\.html$/.test(location.pathname))return;
+  var FNP=/^\/p\/(namaz-sehri-iftar-time|weather)\.html$/.test(location.pathname);
+  if(!FNP&&!/^\/\d{4}\/\d{2}\/.+\.html$/.test(location.pathname))return;
+  /* Namaz ar Weather page e page er title er niche share bar boshay */
+  if(FNP&&!document.querySelector('.fn-share')){var pb=document.getElementById('post-body')||document.querySelector('.post-body');if(pb&&pb.parentNode){var sd=document.createElement('div');sd.className='fn-share fn-share-pg';sd.style.margin='4px 0 18px';pb.parentNode.insertBefore(sd,pb);}}
   var boxes=document.querySelectorAll('.fn-share');if(!boxes.length)return;
   var can=document.querySelector('link[rel="canonical"]');
   var url=(can&&can.href)||(location.origin+location.pathname);
@@ -945,6 +948,7 @@ try{
   var mob=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   var el=document.querySelector('[id^="post-body-"]'),pid=el?el.id.replace('post-body-',''):'';
   if(!/^\d{6,}$/.test(pid)){var m=document.documentElement.innerHTML.match(/postId['"]?\s*[:=]\s*['"]?(\d{6,})/);pid=m?m[1]:'';}
+  if(!pid&&FNP)pid='pg_'+location.pathname.replace(/^\/p\/|\.html$/g,'').replace(/[^a-z0-9]/gi,'_');
   var DB=pid?'https://views-count-cadfd-default-rtdb.firebaseio.com/fnShare/'+pid+'.json':'',LS='fns_'+pid,MIN=1;
   var BN='০১২৩৪৫৬৭৮৯',bn=function(n){return String(n).replace(/\d/g,function(d){return BN[d];});};
   var I={
