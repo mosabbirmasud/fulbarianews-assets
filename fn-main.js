@@ -1122,3 +1122,22 @@ try{
   var a=tr.querySelector('a.on');if(a&&a.offsetLeft>tr.clientWidth-60)tr.scrollLeft=a.offsetLeft-20;
 })();
 }catch(e){console&&console.error&&console.error("fn-main fn-trend",e)}
+
+
+try{
+/* #fn-navact: post page e post-er label (category agey, tarpor tag) onujayi upore menu-r link select (label page er moto). */
+(function(){
+  if(!/^\/\d{4}\/\d{2}\/[^\/]+\.html$/.test(location.pathname))return;
+  var nz=function(s){try{s=decodeURIComponent(s);}catch(e){}return s.replace(/\+/g,' ').normalize('NFD').replace(/[\u200c\u200d]/g,'').replace(/\s+/g,' ').trim();};
+  var lab=function(h){var m=(h||'').match(/\/search\/label\/([^?#]+)/);return m?nz(m[1]):null;};
+  var L=[];document.querySelectorAll('.details-category-title a[href*="/search/label/"], .somoy-tags-wrap a[href*="/search/label/"]').forEach(function(a){var l=lab(a.getAttribute('href'));if(l&&L.indexOf(l)<0)L.push(l);});
+  if(!L.length)return;
+  var nav=document.querySelectorAll('a.nav-link[href*="/search/label/"]');if(!nav.length)return;
+  for(var k=0;k<nav.length;k++){if(nav[k].classList.contains('active'))return;}
+  var best=null,bi=1e9;
+  nav.forEach(function(a){var l=lab(a.getAttribute('href')),i=L.indexOf(l);if(i>-1&&i<bi){bi=i;best=l;}});
+  if(best==null)return;
+  nav.forEach(function(a){if(lab(a.getAttribute('href'))===best){a.classList.add('active');a.setAttribute('aria-current','page');}});
+})();
+
+}catch(e){console&&console.error&&console.error("fn-main fn-navact",e)}
