@@ -1094,3 +1094,30 @@ try{
   var n=0;(function wait(){if(mount())return;if(++n<40)setTimeout(wait,250);})();
 })();
 }catch(e){console&&console.error&&console.error("fn-main fn-sel",e)}
+
+
+/* #fn-trend: header er tarikh-er row te "ট্রেন্ডিং" link strip (Jugantor style). Setting: Layout > Site Features > "ট্রেন্ডিং" gadget (status, title, "লেখা | লিংক" line). CSS theme e. */
+try{
+(function(){
+  var ce=document.querySelector('.sf-cfg[data-k="trending"]');if(!ce)return;
+  var C={},I=[];
+  ce.textContent.split('\n').forEach(function(l){l=l.trim();if(!l)return;
+    var p=l.split('|');if(p.length>=2&&p[0].trim()&&p[1].trim()){I.push([p[0].trim(),p[1].trim()]);return;}
+    var m=l.match(/^([a-z]+)\s*:\s*(.*)$/i);if(m)C[m[1].toLowerCase()]=m[2].trim();});
+  if(/^(off|no|0|বন্ধ)$/i.test(C.status||'')||!I.length)return;
+  var row=document.querySelector('.aj-subnav .aj-in');if(!row||row.querySelector('.fn-trend'))return;
+  var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  var here=decodeURIComponent(location.pathname);
+  var href=function(u){if(/^\/search\/label\//.test(u)){var lb=u.replace('/search/label/','');try{lb=decodeURIComponent(lb);}catch(e){}return '/search/label/'+encodeURIComponent(lb);}return u;};
+  var box=document.createElement('nav');box.className='fn-trend';box.setAttribute('aria-label',C.title||'ট্রেন্ডিং');
+  box.innerHTML='<span class="ftr-l">'+esc(C.title||'ট্রেন্ডিং')+'</span><div class="ftr-t">'+I.map(function(x){var h=href(x[1]);var on=false;try{on=decodeURIComponent(h)===here;}catch(e){}return '<a href="'+esc(h)+'"'+(on?' class="on" aria-current="page"':'')+'>'+esc(x[0])+'</a>';}).join('')+'</div>'+
+    '<button type="button" class="ftr-b ftr-p" aria-label="বাঁয়ে সরান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="ftr-b ftr-n" aria-label="ডানে সরান"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>';
+  var soc=row.querySelector('.aj-social');row.insertBefore(box,soc||null);
+  var tr=box.querySelector('.ftr-t'),pv=box.querySelector('.ftr-p'),nx=box.querySelector('.ftr-n');
+  var upd=function(){var over=tr.scrollWidth>tr.clientWidth+4;box.classList.toggle('ftr-over',over);pv.disabled=tr.scrollLeft<4;nx.disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4;};
+  pv.addEventListener('click',function(){tr.scrollBy({left:-Math.max(160,tr.clientWidth*0.7),behavior:'smooth'});});
+  nx.addEventListener('click',function(){tr.scrollBy({left:Math.max(160,tr.clientWidth*0.7),behavior:'smooth'});});
+  tr.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
+  var a=tr.querySelector('a.on');if(a&&a.offsetLeft>tr.clientWidth-60)tr.scrollLeft=a.offsetLeft-20;
+})();
+}catch(e){console&&console.error&&console.error("fn-main fn-trend",e)}
