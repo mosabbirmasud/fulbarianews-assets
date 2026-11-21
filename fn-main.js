@@ -1172,3 +1172,41 @@ try{
 })();
 
 }catch(e){console&&console.error&&console.error("fn-main fn-photo",e)}
+
+
+try{
+/* #fn-pstory: "ছবি" label-er post e protita chhobir upore "১/৮" nombor, click korle puro porday (lightbox) — age/pore, swipe, keyboard. */
+(function(){
+  if(!/^\/\d{4}\/\d{2}\/[^\/]+\.html$/.test(location.pathname))return;
+  var LB='ছবি',ok=false;
+  document.querySelectorAll('.details-category-title a[href*="/search/label/"], .somoy-tags-wrap a[href*="/search/label/"]').forEach(function(a){var m=a.getAttribute('href').match(/\/search\/label\/([^?#]+)/);if(m){try{if(decodeURIComponent(m[1]).trim()===LB)ok=true;}catch(e){}}});
+  if(!ok)return;
+  var pb=document.getElementById('post-body');if(!pb)return;
+  document.documentElement.classList.add('fn-photo-post');
+  var BN='০১২৩৪৫৬৭৮৯',bn=function(s){return String(s).replace(/\d/g,function(d){return BN[d];});};
+  var big=function(u){return String(u||'').replace(/\/(s\d+|w\d+-h\d+[^\/]*)(-[a-z0-9-]*)?\//,'/s1600/').replace(/=(s\d+|w\d+-h\d+[^=]*)$/,'=s1600');};
+  var imgs=[].slice.call(pb.querySelectorAll('img')).filter(function(im){if(im.closest('.fn-more,.aj-byline,.aj-by,.somoy-tags-wrap,.fn-share'))return false;var w=im.getAttribute('width')||im.naturalWidth||im.getBoundingClientRect().width;return !(w&&w<200);});
+  if(!imgs.length)return;
+  var N=imgs.length,items=imgs.map(function(im){var tb=im.closest('.tr-caption-container'),cap='';if(tb){var c=tb.querySelector('.tr-caption');if(c)cap=c.textContent.trim();}if(!cap)cap=(im.getAttribute('title')||'').trim();var a=im.closest('a[href]');var src=(a&&/\.(jpe?g|png|webp|gif)|blogger\.googleusercontent|bp\.blogspot/i.test(a.href))?a.href:(im.currentSrc||im.src);return {src:big(src),cap:cap,alt:im.alt||''};});
+  var st=document.createElement('style');
+  st.textContent='.fn-ps-w{position:relative!important;display:block}.fn-ps-n{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.62);color:#fff!important;font-size:13px!important;line-height:1!important;padding:6px 10px;border-radius:14px;z-index:2;pointer-events:none;font-weight:600}.fn-ps-z{position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:2;pointer-events:none}.fn-ps-z svg{width:18px;height:18px}html.fn-photo-post #post-body img{cursor:zoom-in}'+
+  '.fn-lb{position:fixed;inset:0;background:#0b0b0b;z-index:2147483000;display:none;flex-direction:column;color:#fff;font-family:inherit}.fn-lb.on{display:flex}.fn-lb-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:15px}.fn-lb-x{background:none;border:0;color:#fff;font-size:30px;line-height:1;cursor:pointer;padding:4px 8px}.fn-lb-st{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0;touch-action:pan-y}.fn-lb-st img{max-width:100%;max-height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}.fn-lb-b{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center}.fn-lb-b:hover{background:rgba(255,255,255,.28)}.fn-lb-p{left:14px}.fn-lb-nx{right:14px}.fn-lb-b[disabled]{opacity:.25;cursor:default}.fn-lb-cap{padding:12px 18px 18px;font-size:15px;line-height:1.65;color:#ddd;max-width:900px;margin:0 auto;text-align:center;min-height:24px}@media(max-width:767.98px){.fn-lb-b{width:38px;height:38px;font-size:22px}.fn-lb-p{left:6px}.fn-lb-nx{right:6px}.fn-lb-cap{font-size:14px}}html.fn-lb-open{overflow:hidden}';
+  document.head.appendChild(st);
+  var ZM='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+  imgs.forEach(function(im,i){var w=im.closest('a')||im.parentElement;w.classList.add('fn-ps-w');if(!w.querySelector('.fn-ps-n')){var n=document.createElement('span');n.className='fn-ps-n';n.textContent=bn(i+1)+'/'+bn(N);w.appendChild(n);var z=document.createElement('span');z.className='fn-ps-z';z.innerHTML=ZM;w.appendChild(z);}
+    w.addEventListener('click',function(e){e.preventDefault();open(i);});});
+  var lb=document.createElement('div');lb.className='fn-lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');
+  lb.innerHTML='<div class="fn-lb-top"><span class="fn-lb-c"></span><button type="button" class="fn-lb-x" aria-label="বন্ধ করুন">×</button></div><div class="fn-lb-st"><button type="button" class="fn-lb-b fn-lb-p" aria-label="আগের ছবি">‹</button><img alt=""><button type="button" class="fn-lb-b fn-lb-nx" aria-label="পরের ছবি">›</button></div><div class="fn-lb-cap"></div>';
+  document.body.appendChild(lb);
+  var I=lb.querySelector('img'),C=lb.querySelector('.fn-lb-c'),CP=lb.querySelector('.fn-lb-cap'),P=lb.querySelector('.fn-lb-p'),NX=lb.querySelector('.fn-lb-nx'),cur=0;
+  var show=function(i){cur=Math.max(0,Math.min(N-1,i));var it=items[cur];I.src=it.src;I.alt=it.alt;C.textContent=bn(cur+1)+'/'+bn(N);CP.textContent=it.cap;P.disabled=cur===0;NX.disabled=cur===N-1;if(cur+1<N){var pre=new Image();pre.src=items[cur+1].src;}};
+  var open=function(i){show(i);lb.classList.add('on');document.documentElement.classList.add('fn-lb-open');lb.querySelector('.fn-lb-x').focus();};
+  var close=function(){lb.classList.remove('on');document.documentElement.classList.remove('fn-lb-open');I.removeAttribute('src');};
+  lb.querySelector('.fn-lb-x').addEventListener('click',close);
+  P.addEventListener('click',function(){show(cur-1);});NX.addEventListener('click',function(){show(cur+1);});
+  lb.querySelector('.fn-lb-st').addEventListener('click',function(e){if(e.target===this)close();});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;if(e.key==='Escape')close();else if(e.key==='ArrowLeft')show(cur-1);else if(e.key==='ArrowRight')show(cur+1);});
+  var sx=null;lb.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});lb.addEventListener('touchend',function(e){if(sx==null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1));sx=null;},{passive:true});
+})();
+
+}catch(e){console&&console.error&&console.error("fn-main fn-pstory",e)}
