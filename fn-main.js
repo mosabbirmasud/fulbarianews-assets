@@ -929,7 +929,8 @@ try{
       var gc=document.querySelector('.sf-cfg[data-k="gold"]'),gm=gc&&gc.textContent.match(/(^|\n)\s*g22\s*:\s*([\d.,]+)/);
       if(gm){var gv=Math.round(parseFloat(gm[2].replace(/,/g,''))*11.664),gs=String(gv),gl=gs.slice(-3),gr=gs.slice(0,-3);if(gr)gl=gr.replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+gl;gl='৳'+gl.replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d];});var gb=gd.querySelector('.la-big');if(gb&&gb.textContent!==gl)gb.textContent=gl;}
     }
-    if(!row.__fnGold){row.__fnGold=1;row.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.la-gold')){e.preventDefault();e.stopPropagation();location.href='/p/gold-price.html';}},true);}
+    var ud=row.querySelector('.la-usd');if(ud&&!ud.getAttribute('aria-label'))ud.setAttribute('aria-label','আজকের ডলার রেট দেখুন');
+    if(!row.__fnGold){row.__fnGold=1;row.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.la-gold')){e.preventDefault();e.stopPropagation();location.href='/p/gold-price.html';}else if(e.target.closest&&e.target.closest('.la-usd')){e.preventDefault();e.stopPropagation();location.href='/p/dollar-rate.html';}},true);}
     return true;
   }
   var n=0;(function wait(){if(apply()){var box=document.querySelector('.la-rw')||document.querySelector('.la-row');if(window.MutationObserver&&box){var busy=false;new MutationObserver(function(){if(busy)return;busy=true;apply();setTimeout(function(){busy=false},0);}).observe(box,{childList:true,subtree:true});}return;}if(++n<80)setTimeout(wait,250);})();
@@ -942,7 +943,7 @@ try{
 
 /*fn-share: ShareThis er bodole nijer share bar (Amar Desh style gol icon) (Facebook, WhatsApp, Messenger, X, Telegram, link copy, mobile share). Count Firebase e (path: fnShare), 1 ba beshi hole dekhay.*/
 (function(){
-  var FNP=/^\/p\/(namaz-sehri-iftar-time|weather|gold-price)\.html$/.test(location.pathname);
+  var FNP=/^\/p\/(namaz-sehri-iftar-time|weather|gold-price|dollar-rate)\.html$/.test(location.pathname);
   if(!FNP&&!/^\/\d{4}\/\d{2}\/.+\.html$/.test(location.pathname))return;
   /* Namaz ar Weather page e page er title er niche share bar boshay */
   if(FNP&&!document.querySelector('.fn-share')){var pb=document.getElementById('post-body')||document.querySelector('.post-body');if(pb&&pb.parentNode){var sd=document.createElement('div');sd.className='fn-share fn-share-pg';sd.style.margin='4px 0 18px';pb.parentNode.insertBefore(sd,pb);}}
