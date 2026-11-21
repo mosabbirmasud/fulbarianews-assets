@@ -1134,8 +1134,10 @@ try{
   if(!L.length)return;
   var nav=document.querySelectorAll('a.nav-link[href*="/search/label/"]');if(!nav.length)return;
   for(var k=0;k<nav.length;k++){if(nav[k].classList.contains('active'))return;}
+  /* agey category (prothom label); na mille: ফুলবাড়ীয়া > ময়মনসিংহ > menu-r baki gula (menu-r kromey) > বাংলাদেশ */
+  var FB=nz('\u09ab\u09c1\u09b2\u09ac\u09be\u09a1\u09bc\u09c0\u09af\u09bc\u09be'),MY=nz('\u09ae\u09af\u09bc\u09ae\u09a8\u09b8\u09bf\u0982\u09b9'),BD=nz('\u09ac\u09be\u0982\u09b2\u09be\u09a6\u09c7\u09b6');
   var best=null,bi=1e9;
-  nav.forEach(function(a){var l=lab(a.getAttribute('href')),i=L.indexOf(l);if(i>-1&&i<bi){bi=i;best=l;}});
+  nav.forEach(function(a,n){var l=lab(a.getAttribute('href'));if(L.indexOf(l)<0)return;var r=l===L[0]?-1:l===FB?0:l===MY?1:l===BD?1e6:2+n;if(r<bi){bi=r;best=l;}});
   if(best==null)return;
   nav.forEach(function(a){if(lab(a.getAttribute('href'))===best){a.classList.add('active');a.setAttribute('aria-current','page');}});
 })();
