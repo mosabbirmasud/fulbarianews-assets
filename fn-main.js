@@ -935,7 +935,7 @@ try{
 
 /*fn-share: ShareThis er bodole nijer share bar (Amar Desh style gol icon) (Facebook, WhatsApp, Messenger, X, Telegram, link copy, mobile share). Count Firebase e (path: fnShare), 1 ba beshi hole dekhay.*/
 (function(){
-  var FNP=/^\/p\/(namaz-sehri-iftar-time|weather)\.html$/.test(location.pathname);
+  var FNP=/^\/p\/(namaz-sehri-iftar-time|weather|gold-price)\.html$/.test(location.pathname);
   if(!FNP&&!/^\/\d{4}\/\d{2}\/.+\.html$/.test(location.pathname))return;
   /* Namaz ar Weather page e page er title er niche share bar boshay */
   if(FNP&&!document.querySelector('.fn-share')){var pb=document.getElementById('post-body')||document.querySelector('.post-body');if(pb&&pb.parentNode){var sd=document.createElement('div');sd.className='fn-share fn-share-pg';sd.style.margin='4px 0 18px';pb.parentNode.insertBefore(sd,pb);}}
