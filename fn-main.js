@@ -923,6 +923,13 @@ try{
     if(!wx.querySelector('.la-wx-lnk')){var a=document.createElement('a');a.className='la-wx-lnk';a.href='/p/weather.html';a.setAttribute('aria-label','ফুলবাড়ীয়ার বিস্তারিত আবহাওয়া');wx.appendChild(a);}
     var t=wx.querySelector('.la-t'),ps=pray&&pray.querySelector('.la-t svg');
     if(t&&ps&&!t.querySelector('svg')){t.appendChild(ps.cloneNode(true));}
+    /* স্বর্ণের দাম card: /p/gold-price.html e jay, dam Layout er gold gadget theke */
+    var gd=row.querySelector('.la-gold');
+    if(gd){gd.setAttribute('aria-label','আজকের স্বর্ণের দাম দেখুন');
+      var gc=document.querySelector('.sf-cfg[data-k="gold"]'),gm=gc&&gc.textContent.match(/(^|\n)\s*g22\s*:\s*([\d.,]+)/);
+      if(gm){var gv=Math.round(parseFloat(gm[2].replace(/,/g,''))*11.664),gs=String(gv),gl=gs.slice(-3),gr=gs.slice(0,-3);if(gr)gl=gr.replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+gl;gl='৳'+gl.replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d];});var gb=gd.querySelector('.la-big');if(gb&&gb.textContent!==gl)gb.textContent=gl;}
+    }
+    if(!row.__fnGold){row.__fnGold=1;row.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.la-gold')){e.preventDefault();e.stopPropagation();location.href='/p/gold-price.html';}},true);}
     return true;
   }
   var n=0;(function wait(){if(apply()){var box=document.querySelector('.la-rw')||document.querySelector('.la-row');if(window.MutationObserver&&box){var busy=false;new MutationObserver(function(){if(busy)return;busy=true;apply();setTimeout(function(){busy=false},0);}).observe(box,{childList:true,subtree:true});}return;}if(++n<80)setTimeout(wait,250);})();
