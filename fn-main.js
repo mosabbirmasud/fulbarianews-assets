@@ -1143,32 +1143,3 @@ try{
 })();
 
 }catch(e){console&&console.error&&console.error("fn-main fn-navact",e)}
-
-
-try{
-/* #fn-photo: "ছবি" label-er post — thumbnail e lal camera icon; ছবি post e shudhu ছবি-r related ("ছবির গল্প নিয়ে আরও দেখুন"), photo story style. */
-(function(){
-  var LB='ছবি';
-  var path=function(u){try{return new URL(u,location.href).pathname;}catch(e){return '';}};
-  var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-  var BN='০১২৩৪৫৬৭৮৯',MO=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
-  var bn=function(s){return String(s).replace(/\d/g,function(d){return BN[d];});};
-  var CAM='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9zm3 5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>';
-  var st=document.createElement('style');
-  st.textContent='.fn-ph-w{position:relative!important}.fn-cam{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:#c8102e;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,.25)}.fn-cam svg{width:16px;height:16px;display:block}.fn-cam.sm{top:5px;left:5px;width:22px;height:22px}.fn-cam.sm svg{width:12px;height:12px}'+
-  'html.fn-photo-post #somoy-songshlishto,html.fn-photo-post #somoy-aro,html.fn-photo-post .fn-more,html.fn-photo-post .pa-more{display:none!important}'+
-  '.fn-phr{margin:28px 0 10px;clear:both}.fn-phr h3{font-size:20px!important;font-weight:700!important;color:#111!important;margin:0 0 14px!important;line-height:1.4!important}.fn-phr-g{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.fn-phr a{display:block;text-decoration:none!important;color:#111!important}.fn-phr .fn-phr-i{position:relative;aspect-ratio:3/2;overflow:hidden;background:#eee}.fn-phr img{width:100%;height:100%;object-fit:cover;display:block;margin:0!important}.fn-phr b{display:block;font-size:16px!important;line-height:1.5!important;font-weight:700!important;margin-top:8px;color:#111!important}.fn-phr a:hover b{color:#c8102e!important}.fn-phr small{display:block;font-size:13px!important;color:#777!important;margin-top:4px}@media(max-width:767.98px){.fn-phr-g{grid-template-columns:repeat(2,1fr);gap:12px}.fn-phr b{font-size:15px!important}}'+
-  'html.fn-photo-post #post-body .separator{margin:22px 0 6px!important}html.fn-photo-post #post-body .separator img{width:100%!important;height:auto!important}html.fn-photo-post #post-body .tr-caption-container{width:100%!important;margin:22px 0 6px!important}html.fn-photo-post #post-body .tr-caption-container img{width:100%!important;height:auto!important}html.fn-photo-post #post-body .tr-caption{font-size:14.5px!important;line-height:1.6!important;color:#555!important;text-align:left!important;padding:8px 0 0!important}';
-  document.head.appendChild(st);
-  var SET=null,ENT=[];
-  var mark=function(root){if(!SET)return;(root||document).querySelectorAll('a[href] img').forEach(function(im){if(im.closest('#post-body .separator,#post-body .tr-caption-container'))return;var a=im.closest('a[href]');if(!a||!SET[path(a.href)])return;var w=im.parentElement;if(!w||w.querySelector(':scope > .fn-cam'))return;var r=im.getBoundingClientRect();if(r.width&&r.width<60)return;w.classList.add('fn-ph-w');var c=document.createElement('span');c.className='fn-cam'+(r.width&&r.width<140?' sm':'');c.innerHTML=CAM;w.appendChild(c);});};
-  var labels=function(){var L=[];document.querySelectorAll('.details-category-title a[href*="/search/label/"], .somoy-tags-wrap a[href*="/search/label/"]').forEach(function(a){var m=a.getAttribute('href').match(/\/search\/label\/([^?#]+)/);if(m){try{L.push(decodeURIComponent(m[1]).trim());}catch(e){}}});return L;};
-  var isPost=/^\/\d{4}\/\d{2}\/[^\/]+\.html$/.test(location.pathname);
-  var related=function(){if(!isPost)return;var here=location.pathname;if(!(SET[here]||labels().indexOf(LB)>-1))return;document.documentElement.classList.add('fn-photo-post');if(document.querySelector('.fn-phr'))return;var list=ENT.filter(function(x){return x.p!==here;}).slice(0,8);if(!list.length)return;var box=document.createElement('div');box.className='fn-phr';box.innerHTML='<h3>ছবির গল্প নিয়ে আরও দেখুন</h3><div class="fn-phr-g">'+list.map(function(x){return '<a href="'+esc(x.u)+'"><div class="fn-phr-i">'+(x.img?'<img loading="lazy" src="'+esc(x.img)+'" alt="'+esc(x.t)+'" width="400" height="267">':'')+'<span class="fn-cam">'+CAM+'</span></div><b>'+esc(x.t)+'</b><small>'+x.d+'</small></a>';}).join('')+'</div>';var at=document.getElementById('somoy-aro')||document.getElementById('somoy-songshlishto');if(at&&at.parentNode)at.parentNode.insertBefore(box,at);else{var pb=document.getElementById('post-body');if(pb)pb.parentNode.insertBefore(box,pb.nextSibling);}};
-  var build=function(data){SET={};ENT=data;data.forEach(function(x){SET[x.p]=1;});related();mark();var t=0;if(window.MutationObserver)new MutationObserver(function(){clearTimeout(t);t=setTimeout(function(){mark();},250);}).observe(document.body,{childList:true,subtree:true});};
-  var KEY='fnPhotoV1',c=null;try{c=JSON.parse(sessionStorage.getItem(KEY)||'null');}catch(e){}
-  if(c&&c.t>Date.now()-6e5&&c.d){build(c.d);return;}
-  fetch('/feeds/posts/summary/-/'+encodeURIComponent(LB)+'?alt=json&max-results=150').then(function(r){return r.json();}).then(function(j){var d=((j.feed&&j.feed.entry)||[]).map(function(e){var u='';(e.link||[]).forEach(function(l){if(l.rel==='alternate')u=l.href;});var img=e['media$thumbnail']?e['media$thumbnail'].url.replace(/\/s72(-[a-z0-9-]*)?\//,'/w400-h267-p-k-no-nu-rw/').replace(/=s72(-[a-z0-9-]*)?$/,'=w400-h267-p-k-no-nu-rw'):'';var dt=new Date(e.published.$t);return {u:u,p:path(u),t:e.title.$t,img:img,d:bn(dt.getDate())+' '+MO[dt.getMonth()]+' '+bn(dt.getFullYear())};});try{sessionStorage.setItem(KEY,JSON.stringify({t:Date.now(),d:d}));}catch(e){}build(d);}).catch(function(){});
-})();
-
-}catch(e){console&&console.error&&console.error("fn-main fn-photo",e)}
