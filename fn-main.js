@@ -929,7 +929,7 @@ try{
       var gc=document.querySelector('.sf-cfg[data-k="gold"]'),gm=gc&&gc.textContent.match(/(^|\n)\s*g22\s*:\s*([\d.,]+)/);
       if(gm){var gv=Math.round(parseFloat(gm[2].replace(/,/g,''))*11.664),gs=String(gv),gl=gs.slice(-3),gr=gs.slice(0,-3);if(gr)gl=gr.replace(/\B(?=(\d{2})+(?!\d))/g,',')+','+gl;gl='৳'+gl.replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d];});var gb=gd.querySelector('.la-big');if(gb&&gb.textContent!==gl)gb.textContent=gl;}
     }
-    var ud=row.querySelector('.la-usd');if(ud&&!ud.getAttribute('aria-label'))ud.setAttribute('aria-label','আজকের ডলার রেট দেখুন');
+    var ud=row.querySelector('.la-usd');var ut=ud&&ud.querySelector('.la-t');if(ut&&ps&&!ut.querySelector('svg'))ut.appendChild(ps.cloneNode(true));if(ud&&!ud.getAttribute('aria-label'))ud.setAttribute('aria-label','আজকের ডলার রেট দেখুন');
     if(!row.__fnGold){row.__fnGold=1;row.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.la-gold')){e.preventDefault();e.stopPropagation();location.href='/p/gold-price.html';}else if(e.target.closest&&e.target.closest('.la-usd')){e.preventDefault();e.stopPropagation();location.href='/p/dollar-rate.html';}},true);}
     return true;
   }
